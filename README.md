@@ -3,8 +3,9 @@ A bot for discordapp.com
 
 ## commands
 
+- `+title <some words>`
 - `+add <a proposition>`
-- `+reset`
+- `+end`
 
 ## link to add bot
 
