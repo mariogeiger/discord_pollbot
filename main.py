@@ -1,8 +1,8 @@
-print("execute pollbot")
-
 import os
 from collections import OrderedDict
 import discord
+
+print("start pollbot with TOKEN={}".format(os.environ['TOKEN']))
 
 client = discord.Client()
 
