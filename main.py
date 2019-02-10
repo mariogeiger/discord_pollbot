@@ -30,21 +30,21 @@ emojis = [
 ]
 
 def make_embed(choices, user):
-    def fmt(i, game, voters):
+    def fmt(i, prop, voters):
         names = sorted(user.mention for user in voters)
         if len(voters) == 0:
-            return "{} no one wants {}".format(emojis[i], game)
+            return "{} [{}] no one".format(emojis[i], prop)
         if len(voters) == 1:
-            return "{} {} wants {}".format(emojis[i], names[0], game)
+            return "{} [{}] {}".format(emojis[i], prop, names[0])
         if len(voters) == 2:
-            return "{} {} and {} want {}".format(emojis[i], *names, game)
+            return "{} [{}] {} and {}".format(emojis[i], prop, *names)
         if len(voters) == 3:
-            return "{} {}, {} and {} want {}".format(emojis[i], *names, game)
-        return "{} {} people want {}".format(emojis[i], len(voters), game)
+            return "{} [{}] {}, {} and {}".format(emojis[i], prop, *names)
+        return "{} [{}] {}, {} and {} other people".format(emojis[i], prop, *names[:2], len(voters) - 2)
 
-    text = "\n".join(fmt(i, game, voters) for i, (game, voters) in enumerate(choices.items()))
+    text = "\n".join(fmt(i, prop, voters) for i, (prop, voters) in enumerate(choices.items()))
 
-    em = discord.Embed(title='{} modified the poll'.format(user.name), description=text, colour=0xFF0000)
+    em = discord.Embed(title='click on the reactions below to vote', description=text, colour=0xFF0000)
     em.set_author(name=user.name, icon_url=user.avatar_url)
     return em
 
