@@ -1,3 +1,5 @@
+print("execute pollbot")
+
 import os
 from collections import OrderedDict
 import discord
