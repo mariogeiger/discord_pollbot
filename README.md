@@ -1,7 +1,6 @@
 # poll bot
 
-1. Create a file `token` with your token in it
-2. Run with `python main.py`
+Run with `TOKEN=<your token here> python main.py`
 
 ## Requirements
 

@@ -1,3 +1,4 @@
+import os
 from collections import OrderedDict
 import discord
 
@@ -132,4 +133,4 @@ async def on_ready():
     print('------')
 
 
-client.run(open('token', 'rt').read())
+client.run(os.environ['TOKEN'])
