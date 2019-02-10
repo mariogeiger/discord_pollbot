@@ -1,7 +1,9 @@
-# poll bot
+# Open Poll
+A bot for discordapp.com
+
 ## commands
 
-- `+play <list of games>`
+- `+add <a proposition>`
 - `+reset`
 
 ## link to add bot

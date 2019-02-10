@@ -31,21 +31,21 @@ emojis = [
 
 def make_embed(choices, user):
     def fmt(i, game, voters):
-        names = sorted(user.name for user in voters)
+        names = sorted(user.mention for user in voters)
         if len(voters) == 0:
-            return "{} no one wants to play {}".format(emojis[i], game)
+            return "{} no one wants {}".format(emojis[i], game)
         if len(voters) == 1:
-            return "{} {} wants to play {}".format(emojis[i], names[0], game)
+            return "{} {} wants {}".format(emojis[i], names[0], game)
         if len(voters) == 2:
-            return "{} {} and {} want to play {}".format(emojis[i], *names, game)
+            return "{} {} and {} want {}".format(emojis[i], *names, game)
         if len(voters) == 3:
-            return "{} {}, {} and {} want to play {}".format(emojis[i], *names, game)
-        return "{} {} people want to play {}".format(emojis[i], len(voters), game)
+            return "{} {}, {} and {} want {}".format(emojis[i], *names, game)
+        return "{} {} people want {}".format(emojis[i], len(voters), game)
 
     text = "\n".join(fmt(i, game, voters) for i, (game, voters) in enumerate(choices.items()))
 
-    em = discord.Embed(title='List of choices', description=text, colour=0xFF0000)
-    em.set_author(name='Poll Bot', icon_url=user.avatar_url)
+    em = discord.Embed(title='{} modified the poll'.format(user.name), description=text, colour=0xFF0000)
+    em.set_author(name=user.name, icon_url=user.avatar_url)
     return em
 
 
@@ -55,27 +55,29 @@ async def on_message(message):
     if message.author == client.user:
         return
 
-    if message.content.startswith('+play'):
-        games = message.content.split()[1:]
+    if message.content.startswith('+add '):
+        proposition = message.content[5:]
+        if len(proposition) == 0:
+            return
 
         if message.channel not in polls:
             polls[message.channel] = Poll()
 
         poll = polls[message.channel]
 
-        for game in games:
-            poll.choices[game] = set()
+        if proposition not in poll.choices:
+            poll.choices[proposition] = set()
 
-        em = make_embed(poll.choices, message.author)
+            em = make_embed(poll.choices, message.author)
 
-        if poll.message is None:
-            poll.message = await client.send_message(message.channel, embed=em)
-        else:
-            poll.message = await client.edit_message(poll.message, embed=em)
+            if poll.message is None:
+                poll.message = await client.send_message(message.channel, embed=em)
+            else:
+                poll.message = await client.edit_message(poll.message, embed=em)
 
-        for i in range(len(poll.choices)):
-            if emojis[i] not in [reaction.emoji for reaction in poll.message.reactions]:
-                await client.add_reaction(poll.message, emojis[i])
+            for i in range(len(poll.choices)):
+                if emojis[i] not in [reaction.emoji for reaction in poll.message.reactions]:
+                    await client.add_reaction(poll.message, emojis[i])
 
 
     if message.content.startswith('+reset'):
