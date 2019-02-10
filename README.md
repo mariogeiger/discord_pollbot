@@ -1,7 +1,14 @@
 # poll bot
+## commands
 
-Run with `TOKEN=<your token here> python main.py`
+- `+play <list of games>`
+- `+reset`
 
-## Requirements
+## link to add bot
 
-- `discord.py` library
+https://discordapp.com/api/oauth2/authorize?client_id=543817857935474708&permissions=75840&scope=bot
+
+## run locally
+
+1. Install requirements with `pip install -r requirements.txt`
+2. Run with `TOKEN=<your token here> python main.py`
